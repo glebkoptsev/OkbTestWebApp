@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OkbTestWebApp.Models;
 using OkbTestWebApp.Services;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +18,17 @@ namespace OkbTestWebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<string>> Get()
+        public async Task<IEnumerable<string>> GetTickers()
         {
-            var model = await RatesService.GetData();
-            return model.Valute.Select(v => v.Value.ID).ToArray();
+            return await RatesService.GetTickers();
+            //return new List<string>();
+            //return null;
         }
 
         [HttpGet("{id}")]
-        public async Task<double?> Get(string id)
+        public async Task<double?> GetValue(string id)
         {
-            var model = await RatesService.GetData();
-            return model.Valute.FirstOrDefault(v => v.Value.ID == id).Value?.Value;
+            return await RatesService.GetValue(id);
         }
     }
 }

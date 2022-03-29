@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using OkbTestWebApp.Models;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -26,6 +28,18 @@ namespace OkbTestWebApp.Services
                 return null;
             }
             return JsonSerializer.Deserialize<DailyExchangeRatesModel>(json);
+        }
+
+        public async Task<IEnumerable<string>> GetTickers()
+        {
+            var model = await GetData();
+            return model.Valute.Select(v => v.Value.ID).ToArray();
+        }
+
+        public async Task<double?> GetValue(string id)
+        {
+            var model = await GetData();
+            return model.Valute.FirstOrDefault(v => v.Value.ID == id).Value?.Value;
         }
     }
 }
